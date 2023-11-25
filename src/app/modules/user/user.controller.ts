@@ -5,10 +5,11 @@ const createUser = async(req:Request, res:Response)=>{
     try{
         const user = req.body.user;
     const result = await UserServices.createUserIntoDB(user)
+    const projectedData = {...result.toObject(), password: undefined}
     res.status(200).json({
         success: true,
         message: 'User created successfully',
-        data: result,
+        data: projectedData,
     })
     }catch(err:any){
         res.status(500).json({
@@ -54,8 +55,38 @@ const getSingleUser = async(req:Request, res:Response)=>{
     }
 }
 
+const updateData = async(req:Request, res:Response)=>{
+    try{
+        const {userId} = req.params;
+        const updatedData = req.body;
+        const result = await UserServices.updateDataFromDB(userId, updatedData)
+        if(!result){
+            return  res.status(404).json({
+                success: false,
+                message: 'User not found',
+                error:{
+                    code: 404,
+                    description: 'User not found!'
+                }
+            })
+        }
+        res.status(200).json({
+            success: true,
+            message: 'User updated successfully!',
+            data: result,
+        })
+    }catch(err:any){
+        res.status(500).json({
+            success: false,
+            message: err.message,
+            data: err,
+        })
+    }
+}
+
 export const UserController = {
     createUser,
     getUsers,
     getSingleUser,
+    updateData
 }

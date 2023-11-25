@@ -100,19 +100,14 @@ userSchema.pre('save', async function (next){
     next();
 })
 
-userSchema.post('save', function(doc, next){
-    doc.password = '',
-    next();
-});
-
 userSchema.statics.isUserExists = async function(data:TUser){
-    const existingUser = await User.findOne({
-        $or: [
-            {userId: data.userId},
-            {email: data.email}
-        ]
-    });
-    return existingUser;
+        const existingUser = await User.findOne({
+            $or: [
+                {userId: data.userId},
+                {email: data.email}
+            ]
+        });
+        return existingUser;
 }
 
 export const User = model<TUser, UserModel>('User', userSchema)

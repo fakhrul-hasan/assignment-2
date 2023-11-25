@@ -19,8 +19,14 @@ const getSingleUserFromDB = async(id:string)=>{
     return result;
 }
 
+const updateDataFromDB = async(userId:string, updatedData: TUser)=>{
+    const result = await User.findOneAndUpdate({userId: userId}, updatedData, {new: true, projection:{_id: 0, password: 0, orders: 0, 'fullName._id': 0, 'address._id': 0}})
+    return result;
+}
+
 export const UserServices = {
     createUserIntoDB,
     getUsersFromDB,
-    getSingleUserFromDB
+    getSingleUserFromDB,
+    updateDataFromDB,
 }
