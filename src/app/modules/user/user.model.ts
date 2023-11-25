@@ -1,5 +1,7 @@
-import { Schema } from "mongoose";
+import { Schema, model } from "mongoose";
 import { TAddress, TFullName, TProduct, TUser } from "./user.interface";
+import bcrypt from 'bcrypt';
+import config from "../../config";
 
 const fullNameSchema = new Schema<TFullName>({
     firstName: {
@@ -47,7 +49,7 @@ const productSchema = new Schema<TProduct>({
     }
 })
 
-const user = new Schema<TUser>({
+const userSchema = new Schema<TUser>({
     userId: {
         type: Number,
         required: [true, 'UserId is required'],
@@ -89,3 +91,18 @@ const user = new Schema<TUser>({
         type: [productSchema],
     }
 })
+
+userSchema.pre('save', async function (next){
+    this.password = await bcrypt.hash(
+        this.password,
+        Number(config.bcrypt_salt_rounds),
+    );
+    next();
+})
+
+userSchema.post('save', function(doc, next){
+    doc.password = '',
+    next();
+});
+
+export const UserModel = model<TUser>('User', userSchema)
