@@ -1,5 +1,5 @@
 import { Schema, model } from "mongoose";
-import { TAddress, TFullName, TProduct, TUser } from "./user.interface";
+import { TAddress, TFullName, TProduct, TUser, UserModel } from "./user.interface";
 import bcrypt from 'bcrypt';
 import config from "../../config";
 
@@ -105,4 +105,14 @@ userSchema.post('save', function(doc, next){
     next();
 });
 
-export const UserModel = model<TUser>('User', userSchema)
+userSchema.statics.isUserExists = async function(data:TUser){
+    const existingUser = await User.findOne({
+        $or: [
+            {userId: data.userId},
+            {email: data.email}
+        ]
+    });
+    return existingUser;
+}
+
+export const User = model<TUser, UserModel>('User', userSchema)
