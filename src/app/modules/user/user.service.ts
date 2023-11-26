@@ -38,11 +38,17 @@ const addProductIntoDB = async(userId:string, newOrder:object)=>{
     return result;
 }
 
+const getSingleUserOrderFromDB = async(id:string)=>{
+    const result = await User.findOne({userId: id}, {orders: 1});
+    return result;
+}
+
 export const UserServices = {
     createUserIntoDB,
     getUsersFromDB,
     getSingleUserFromDB,
     updateDataFromDB,
     deleteUserFromDB,
-    addProductIntoDB
+    addProductIntoDB,
+    getSingleUserOrderFromDB
 }
