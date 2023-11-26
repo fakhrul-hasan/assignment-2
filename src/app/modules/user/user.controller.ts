@@ -157,7 +157,35 @@ const getSingleUserOrder = async(req:Request, res:Response)=>{
     }
     res.status(200).json({
         success: true,
-        message: 'Order fetched successfully',
+        message: 'Order fetched successfully!',
+        data: result,
+    })
+    }catch(err:any){
+        res.status(500).json({
+            success: false,
+            message: err.message,
+            data: err,
+        })
+    }
+}
+
+const totalPriceOfSingleUser = async(req:Request, res:Response)=>{
+    try{
+    const {userId} = req.params;
+    const result = await UserServices.totalPriceOfSingleUser(userId);
+    if(!result){
+        return  res.status(404).json({
+            success: false,
+            message: 'User not found',
+            error:{
+                code: 404,
+                description: 'User not found!'
+            }
+        })
+    }
+    res.status(200).json({
+        success: true,
+        message: 'Total price calculated successfully!',
         data: result,
     })
     }catch(err:any){
@@ -176,5 +204,6 @@ export const UserController = {
     updateData,
     deleteUserById,
     addProduct,
-    getSingleUserOrder
+    getSingleUserOrder,
+    totalPriceOfSingleUser
 }
