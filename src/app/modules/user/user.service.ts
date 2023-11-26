@@ -50,8 +50,8 @@ const totalPriceOfSingleUser = async(id:string)=>{
         { $group: { _id: null, totalPrice: { $sum: { $multiply: ['$orders.price', '$orders.quantity'] } } } },
         { $project: { _id: 0} }
     ])
-    
-    return result;
+    const totalSum = result.length > 0 ? result[0] : 0;
+    return totalSum;
 }
 
 export const UserServices = {
