@@ -27,7 +27,7 @@ export type TUser = {
     isActive: boolean,
     hobbies: string[],
     address: TAddress,
-    orders: TProduct[],
+    orders?: TProduct[],
 }
 
 export interface UserModel extends Model<TUser> {

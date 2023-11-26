@@ -29,10 +29,20 @@ const deleteUserFromDB = async(userId:string)=>{
     return result;
 }
 
+const addProductIntoDB = async(userId:string, newOrder:object)=>{
+    const result = await User.findOneAndUpdate(
+        {userId: userId},
+        {$push: {orders: newOrder}},
+        {new: true}
+    )
+    return result;
+}
+
 export const UserServices = {
     createUserIntoDB,
     getUsersFromDB,
     getSingleUserFromDB,
     updateDataFromDB,
-    deleteUserFromDB
+    deleteUserFromDB,
+    addProductIntoDB
 }
