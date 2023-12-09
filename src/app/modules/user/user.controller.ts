@@ -3,7 +3,8 @@ import { UserServices } from './user.service';
 
 const createUser = async (req: Request, res: Response) => {
   try {
-    const user = req.body.user;
+    const user = req.body;
+    
     const result = await UserServices.createUserIntoDB(user);
     const projectedData = { ...result.toObject(), password: undefined };
     res.status(200).json({
@@ -58,8 +59,8 @@ const getSingleUser = async (req: Request, res: Response) => {
 const updateData = async (req: Request, res: Response) => {
   try {
     const { userId } = req.params;
-    const updatedData = req.body;
-    const result = await UserServices.updateDataFromDB(userId, updatedData);
+    
+    const result = await UserServices.updateDataFromDB(userId, req.body);
     if (!result) {
       return res.status(404).json({
         success: false,
@@ -115,7 +116,7 @@ const deleteUserById = async (req: Request, res: Response) => {
 const addProduct = async (req: Request, res: Response) => {
   try {
     const { userId } = req.params;
-    const newOrder = req.body.order;
+    const newOrder = req.body;
     const result = await UserServices.addProductIntoDB(userId, newOrder);
     if (!result) {
       return res.status(404).json({
