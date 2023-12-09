@@ -45,7 +45,7 @@ const getSingleUserFromDB = async (id: string) => {
 
 const updateDataFromDB = async (userId: string, payload: TUser) => {
   
-  const result = await User.updateOne({ userId: userId }, {$set: payload}, {
+  const result = await User.findOneAndUpdate({ userId: userId }, payload, {
     new: true,
     projection: {
       _id: 0,
