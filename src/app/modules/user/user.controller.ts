@@ -6,10 +6,10 @@ const createUser = async (req: Request, res: Response) => {
     const user = req.body;
     
     const result = await UserServices.createUserIntoDB(user);
-    const projectedData = { ...result.toObject(), password: undefined };
+    const projectedData = { ...result.toObject(), password: undefined, orders: undefined };
     res.status(200).json({
       success: true,
-      message: 'User created successfully',
+      message: 'User created successfully!',
       data: projectedData,
     });
   } catch (err: any) {
@@ -26,7 +26,7 @@ const getUsers = async (req: Request, res: Response) => {
     const result = await UserServices.getUsersFromDB();
     res.status(200).json({
       success: true,
-      message: 'Users fetched successfully',
+      message: 'Users fetched successfully!',
       data: result,
     });
   } catch (err: any) {
@@ -44,7 +44,7 @@ const getSingleUser = async (req: Request, res: Response) => {
     const result = await UserServices.getSingleUserFromDB(userId);
     res.status(200).json({
       success: true,
-      message: 'User fetched successfully',
+      message: 'User fetched successfully!',
       data: result,
     });
   } catch (err: any) {
